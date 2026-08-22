@@ -1,0 +1,11 @@
+langgraph
+langchain-core
+langchain-openai
+mcp
+pydantic
+python-dotenv
+yfinance
+fastapi
+uvicorn
+streamlit
+requests
