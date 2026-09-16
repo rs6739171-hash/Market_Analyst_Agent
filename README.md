@@ -44,3 +44,9 @@ equity_intelligence_platform/
 ├── requirements.txt           # Project dependencies
 └── README.md
 ```
+
+
+
+## Reviewed deployment setup
+
+See [DEPLOYMENT_REVIEW.md](DEPLOYMENT_REVIEW.md) for the review findings, required secrets, hosting setup, verification limits, and remaining work. The Render blueprint is [render.yaml](render.yaml).

@@ -14,7 +14,7 @@ def portfolio_manager(state: dict) -> dict:
     
     prompt = ChatPromptTemplate.from_messages([
         ("system", """You are a Lead Portfolio Manager at a top-tier Asset Management Company.
-        Your job is to read the reports from your Fundamental and Technical analysts and draft a final Investment Memo.
+        Use only the supplied data. Explicitly identify missing or stale data; never invent metrics, prices, or historical comparisons. Your job is to read the reports from your Fundamental and Technical analysts and draft a final Investment Memo.
         
         Your memo must include:
         1. Executive Summary: A one-paragraph definitive stance (Buy, Hold, or Sell).

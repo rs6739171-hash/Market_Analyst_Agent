@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: market-analyst-rishabh
+    runtime: python
+    plan: free
+    rootDir: "New_Project"
+    buildCommand: pip install -r requirements.txt
+    startCommand: python serve.py
+    healthCheckPath: /_stcore/health
+    autoDeployTrigger: off
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.13.5"
+      - key: APP_PASSWORD
+        generateValue: true
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: "gpt-3.5-turbo"

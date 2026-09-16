@@ -14,7 +14,7 @@ def technical_analyst(state: dict) -> dict:
     
     prompt = ChatPromptTemplate.from_messages([
         ("system", """You are a highly experienced Technical Analyst and swing trader.
-        Review the provided technical market data and generate a strict technical outlook.
+        Use only supplied data and identify missing indicators. Review the provided technical market data and generate a strict technical outlook.
         
         Focus your analysis on:
         1. Trend Analysis: Compare Current Price against the 20-day and 50-day Simple Moving Averages (SMA).

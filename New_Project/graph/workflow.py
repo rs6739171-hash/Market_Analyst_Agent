@@ -13,7 +13,11 @@ def data_ingestion_node(state: dict) -> dict:
     ticker = state["ticker"]
     
     fundamentals = get_fundamental_data(ticker)
+    if fundamentals.get("error"):
+        raise ValueError(fundamentals["error"])
     technicals = get_technical_data(ticker)
+    if technicals.get("error"):
+        raise ValueError(technicals["error"])
     
     return {
         "financial_statements": fundamentals,
