@@ -16,7 +16,7 @@ def fundamental_analyst(state:dict)->dict:
     # Define the expert system prompt
     prompt = ChatPromptTemplate.from_messages([
         ("system", """You are a Tier-1 Equity Research Fundamental Analyst. 
-        Your job is to analyze the provided financial data and generate a comprehensive fundamental thesis.
+        Use only the supplied data. Explicitly identify missing or stale data; never invent metrics, prices, or historical comparisons. Your job is to analyze the provided financial data and generate a comprehensive fundamental thesis.
         
         Focus your analysis on:
         1. Valuation Multiples (P/E, Forward P/E, P/B) vs. historical/sector averages.

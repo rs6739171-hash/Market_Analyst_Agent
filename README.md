@@ -1,46 +1,41 @@
-[README.md](https://github.com/user-attachments/files/31331481/README.md)
-# 📈 Autonomous Multi-Agent Equity & Market Intelligence Platform
+# Multi-Agent Market Analyst
 
-An enterprise-grade, multi-agent AI system designed to autonomously aggregate market data, perform fundamental and technical analysis, and synthesize institutional-grade investment memos. 
+[Live app](https://market-analyst-rishabh.onrender.com/) · [Portfolio and demo access](https://my-portfolio-website-topaz-beta.vercel.app/)
 
-This project simulates the workflow of an Asset Management Company (AMC) and equity research firm, featuring a Human-in-the-Loop (HITL) architecture, stateful graph orchestration, and decoupled API/UI layers.
+A personal Python and GenAI project by Rishabh Shukla. The LangGraph workflow gathers market data, runs fundamental and technical analysis, then pauses for human review before generating the final research memo. FastAPI serves the private backend and Streamlit provides the public, password-protected interface.
 
-## 🚀 Key Features
+## Implemented behavior
 
-*   **Multi-Agent Orchestration:** Powered by **LangGraph**, utilizing specialized AI agents (Fundamental Analyst, Technical Analyst, and Portfolio Manager) that operate on a shared workflow state.
-*   **Deterministic Data Ingestion:** Uses `yfinance` to reliably fetch real-time market data, valuation multiples, and price action, preventing LLM arithmetic hallucinations.
-*   **Human-in-the-Loop (HITL) Checkpoint:** Stateful execution pauses before final memo generation, requiring Chief Investment Officer (CIO) approval via the UI before the Portfolio Manager finalizes the report.
-*   **Decoupled Architecture:** A **FastAPI** backend manages the LangGraph execution and state persistence, while a **Streamlit** frontend provides a clean, interactive dashboard.
-*   **High-Speed Inference:** Utilizes lightning-fast LLM reasoning via the **OpenAI API**.
+- yfinance and Pandas supply available company fundamentals, price history, SMA-20, SMA-50 and RSI-14.
+- Fundamental and technical analyst nodes feed a portfolio-manager synthesis node.
+- Explicit approval is required before memo generation. Rejecting a request ends that workflow; it cannot later be approved accidentally.
+- Invalid tickers and unavailable data stop the workflow rather than silently producing a research memo.
+- Regression tests, a CI workflow and a Render deployment blueprint are included.
 
-## 🛠️ Tech Stack
+## Limits
 
-*   **AI & Orchestration:** LangGraph, LangChain, OPenAI API
-*   **Backend:** FastAPI, Uvicorn, Python 3.10+
-*   **Frontend:** Streamlit, Requests
-*   **Data & Finance:** `yfinance`, Pandas
-*   **State Management:** LangGraph `MemorySaver`
+This is a research prototype, not verified investment advice or a trading system. Provider data can be missing, delayed or rate limited, and generated analysis can be wrong. It does not place trades. In-memory checkpoints do not survive restarts. No performance, profit, production-readiness or independent model-quality claim is made.
 
-## 📂 Project Structure
+## Run locally
 
-```text
-equity_intelligence_platform/
-├── api/
-│   ├── routes.py              # FastAPI endpoints (/start, /approve)
-│   └── schemas.py             # Pydantic request models
-├── core/
-│   ├── config.py              # Environment variables & OpenAI LLM init
-│   └── state.py               # LangGraph AgentState TypedDict
-├── mcp_servers/
-│   └── finance_api.py         # YFinance data extraction tools
-├── agents/
-│   ├── fundamental.py         # Fundamental Analyst agent logic
-│   ├── technical.py           # Technical Analyst agent logic
-│   └── portfolio_manager.py   # Synthesis and final memo generation
-├── graph/
-│   └── workflow.py            # LangGraph node routing and HITL setup
-├── app.py                     # Streamlit Frontend UI
-├── main.py                    # Terminal execution script (optional)
-├── requirements.txt           # Project dependencies
-└── README.md
+Use Python 3.12 or 3.13:
+
+```bash
+git clone https://github.com/rs6739171-hash/Market_Analyst_Agent.git
+cd Market_Analyst_Agent
+python -m venv .venv
+source .venv/bin/activate
+pip install -r New_Project/requirements.txt
+cd New_Project
+cp .env.example .env
+# Set OPENAI_API_KEY and your chosen OPENAI_MODEL.
+python serve.py
 ```
+
+Set APP_PASSWORD for hosted access. Open the Streamlit URL printed by the launcher. The FastAPI service binds to loopback; do not expose it publicly without adding appropriate access controls. Never commit credentials.
+
+## Verify and deploy
+
+From the repository root, run `python -m unittest discover -s tests -v`. Tests cover rejection, invalid data, ticker validation and RSI edge cases. GitHub Actions installs dependencies, runs tests and checks Python syntax without paid provider calls.
+
+The Render blueprint is [render.yaml](render.yaml). The prior detailed deployment review is [DEPLOYMENT_REVIEW.md](DEPLOYMENT_REVIEW.md). Passing offline tests does not guarantee live provider availability.

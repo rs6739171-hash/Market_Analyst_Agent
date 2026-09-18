@@ -37,7 +37,7 @@ def get_technical_data(ticker:str,period:str="6mo")->Dict[str,Any]:
     hist= stock.history(period = period)
 
     if hist.empty:
-        return{"Error": f"No historical data found for {ticker}"}
+        return{"error": f"No historical data found for {ticker}"}
     # Calculate simple moving average
     hist["SMA_20"] = hist["Close"].rolling(window=20).mean()
     hist["SMA_50"] = hist["Close"].rolling(window=50).mean()
@@ -45,9 +45,11 @@ def get_technical_data(ticker:str,period:str="6mo")->Dict[str,Any]:
     # Calculate 14 day RSI
     delta = hist["Close"].diff()
     gain = (delta.where(delta>0, 0)).rolling(window=14).mean()
-    loss = (delta.where(delta<0,0)).rolling(window=14).mean()
+    loss = (-delta.where(delta<0,0)).rolling(window=14).mean()
     rs = gain/loss
     hist["RSI_14"] = 100-(100/(1+rs))
+    # Flat series is neutral; an all-gain series is overbought, all-loss is oversold.
+    hist.loc[(gain == 0) & (loss == 0), "RSI_14"] = 50.0
     latest = hist.iloc[-1]
     prev_close = hist["Close"].iloc[-2] if len(hist)>1 else latest["Close"]
 
