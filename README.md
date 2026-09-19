@@ -4,6 +4,13 @@
 
 A personal Python and GenAI project by Rishabh Shukla. The LangGraph workflow gathers market data, runs fundamental and technical analysis, then pauses for human review before generating the final research memo. FastAPI serves the private backend and Streamlit provides the public, password-protected interface.
 
+## Recruiter quick scan
+
+- **Agent orchestration:** fundamental and technical analyst nodes feed a portfolio-manager synthesis workflow in LangGraph.
+- **Human-in-the-loop:** explicit approval is required before memo generation; rejected requests terminate safely.
+- **Data pipeline:** yfinance and Pandas power fundamentals, price history, SMA and RSI analysis with validation for unavailable/invalid data.
+- **Delivery:** FastAPI, Streamlit, regression tests, GitHub Actions and Render deployment configuration.
+
 ## Implemented behavior
 
 - yfinance and Pandas supply available company fundamentals, price history, SMA-20, SMA-50 and RSI-14.
